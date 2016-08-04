@@ -17,6 +17,8 @@ public class BraveProviderFilter implements Filter {
     private static volatile ServerResponseInterceptor serverResponseInterceptor;
     private static volatile ServerSpanThreadBinder serverSpanThreadBinder;
 
+
+
     public static void setBrave(Brave brave) {
         BraveProviderFilter.brave = brave;
         BraveProviderFilter.serverRequestInterceptor = brave.serverRequestInterceptor();
@@ -27,7 +29,7 @@ public class BraveProviderFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        serverRequestInterceptor.handle(new DubboServerRequestAdapter(invoker,invocation));
+        serverRequestInterceptor.handle(new DubboServerRequestAdapter(invoker,invocation,brave.serverTracer()));
         Result rpcResult = invoker.invoke(invocation);
         serverResponseInterceptor.handle(new DubboServerResponseAdapter(rpcResult));
         return rpcResult;
