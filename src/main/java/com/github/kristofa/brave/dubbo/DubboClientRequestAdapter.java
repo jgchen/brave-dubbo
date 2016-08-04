@@ -3,10 +3,7 @@ package com.github.kristofa.brave.dubbo;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.RpcContext;
-import com.github.kristofa.brave.ClientRequestAdapter;
-import com.github.kristofa.brave.IdConversion;
-import com.github.kristofa.brave.KeyValueAnnotation;
-import com.github.kristofa.brave.SpanId;
+import com.github.kristofa.brave.*;
 import com.github.kristofa.brave.internal.Nullable;
 import com.twitter.zipkin.gen.Endpoint;
 
@@ -53,21 +50,9 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
     public Endpoint serverAddress() {
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getRemoteAddress();
         String application = RpcContext.getContext().getUrl().getParameter("application");
-
-        return Endpoint.create(application,ip2Int(RpcContext.getContext().getUrl().getIp()),inetSocketAddress.getPort());
+        String ipAddr = RpcContext.getContext().getUrl().getIp();
+        return Endpoint.create(application, IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort());
     }
 
-    public  int ip2Int(String ip) {
-        String[] p4 = ip.split("\\.");
-        int ipInt = 0;
-        int part = Integer.valueOf(p4[0]);
-        ipInt = ipInt | (part << 24);
-        part = Integer.valueOf(p4[1]);
-        ipInt = ipInt | (part << 16);
-        part = Integer.valueOf(p4[2]);
-        ipInt = ipInt | (part << 8);
-        part = Integer.valueOf(p4[3]);
-        ipInt = ipInt | (part);
-        return ipInt;
-    }
+
 }

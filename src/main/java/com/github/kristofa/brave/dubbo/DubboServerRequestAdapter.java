@@ -57,7 +57,7 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
         String application = RpcContext.getContext().getUrl().getParameter("application");
         String ipAddr = RpcContext.getContext().getUrl().getIp();
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getLocalAddress();
-        serverTracer.setServerReceived(ip2Int(ipAddr),inetSocketAddress.getPort(),application);
+        serverTracer.setServerReceived(IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort(),application);
 
         InetSocketAddress socketAddress = RpcContext.getContext().getLocalAddress();
         if (socketAddress != null) {
@@ -77,17 +77,5 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
                 .parentId(parentSpanId == null ? null : convertToLong(parentSpanId)).build();
     }
 
-    public  int ip2Int(String ip) {
-        String[] p4 = ip.split("\\.");
-        int ipInt = 0;
-        int part = Integer.valueOf(p4[0]);
-        ipInt = ipInt | (part << 24);
-        part = Integer.valueOf(p4[1]);
-        ipInt = ipInt | (part << 16);
-        part = Integer.valueOf(p4[2]);
-        ipInt = ipInt | (part << 8);
-        part = Integer.valueOf(p4[3]);
-        ipInt = ipInt | (part);
-        return ipInt;
-    }
+
 }
