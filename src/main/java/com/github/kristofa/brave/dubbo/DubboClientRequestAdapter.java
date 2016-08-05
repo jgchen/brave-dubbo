@@ -30,6 +30,8 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
 
     @Override
     public void addSpanIdToRequest(@Nullable SpanId spanId) {
+        String application = RpcContext.getContext().getUrl().getParameter("application");
+        RpcContext.getContext().setAttachment("clientName", application);
         if (spanId == null) {
             RpcContext.getContext().setAttachment("sampled", "0");
         }else{
@@ -49,9 +51,20 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
     @Override
     public Endpoint serverAddress() {
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getRemoteAddress();
-        String application = RpcContext.getContext().getUrl().getParameter("application");
         String ipAddr = RpcContext.getContext().getUrl().getIp();
-        return Endpoint.create("pjconfig", IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort());
+        String serverName = resolverServerName();
+        return Endpoint.create(serverName, IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort());
+    }
+
+    /**
+     * com.xxx.bu.serverName.api.XXXX
+     * 公司应用标准化后ServerName从interface中解析
+     */
+    private  String resolverServerName(){
+       String interfaceName= invoker.getInterface().getName();
+       String packageName =interfaceName.substring(0,interfaceName.lastIndexOf(".api."));
+       String  serverName =  packageName.substring(packageName.lastIndexOf(".")+1);
+       return serverName;
     }
 
 

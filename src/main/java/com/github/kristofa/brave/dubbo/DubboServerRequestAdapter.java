@@ -57,7 +57,9 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
         String application = RpcContext.getContext().getUrl().getParameter("application");
         String ipAddr = RpcContext.getContext().getUrl().getIp();
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getRemoteAddress();
-        serverTracer.setServerReceived(IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort(),"spadmin");
+
+        final String clientName = invocation.getAttachment("clientName");
+        serverTracer.setServerReceived(IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort(),clientName);
 
         InetSocketAddress socketAddress = RpcContext.getContext().getLocalAddress();
         if (socketAddress != null) {

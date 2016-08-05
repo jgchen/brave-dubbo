@@ -3,10 +3,7 @@ package com.github.kristofa.brave.dubbo;
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.*;
-import com.github.kristofa.brave.Brave;
-import com.github.kristofa.brave.ClientRequestInterceptor;
-import com.github.kristofa.brave.ClientResponseInterceptor;
-import com.github.kristofa.brave.ClientSpanThreadBinder;
+import com.github.kristofa.brave.*;
 import com.twitter.zipkin.gen.Span;
 
 /**
@@ -17,6 +14,7 @@ public class BraveConsumerFilter implements Filter {
 
 
     private static volatile Brave brave;
+    private static volatile String clientName;
     private static volatile ClientRequestInterceptor clientRequestInterceptor;
     private static volatile ClientResponseInterceptor clientResponseInterceptor;
     private static volatile ClientSpanThreadBinder clientSpanThreadBinder;
