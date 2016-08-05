@@ -32,13 +32,14 @@ public class DubboClientResponseAdapter implements ClientResponseAdapter {
         List<KeyValueAnnotation> annotations = new ArrayList<KeyValueAnnotation>();
         if(exception != null){
             KeyValueAnnotation keyValueAnnotation=  KeyValueAnnotation.create("exception",exception.getMessage());
-
+            annotations.add(keyValueAnnotation);
         }else{
             if(rpcResult.hasException()){
                 KeyValueAnnotation keyValueAnnotation=  KeyValueAnnotation.create("exception",rpcResult.getException().getMessage());
                 annotations.add(keyValueAnnotation);
             }else{
                 KeyValueAnnotation keyValueAnnotation=  KeyValueAnnotation.create("status","success");
+                annotations.add(keyValueAnnotation);
             }
         }
         return annotations;
