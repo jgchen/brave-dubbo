@@ -57,6 +57,7 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
     }
 
     /**
+     *
      * com.xxx.bu.serverName.api.XXXX
      * 公司应用标准化后ServerName从interface中解析
      */
