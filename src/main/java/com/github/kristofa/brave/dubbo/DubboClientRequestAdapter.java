@@ -51,7 +51,7 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getRemoteAddress();
         String application = RpcContext.getContext().getUrl().getParameter("application");
         String ipAddr = RpcContext.getContext().getUrl().getIp();
-        return Endpoint.create("rpc", IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort());
+        return Endpoint.create("pjconfig", IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort());
     }
 
 
