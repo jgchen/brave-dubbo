@@ -24,8 +24,8 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
     private Invoker<?> invoker;
     private Invocation invocation;
     private ServerTracer serverTracer;
-    private DubboSpanNameProvider spanNameProvider = new DefaultSpanNameProvider();
-    private DubboClientNameProvider clientNameProvider = new DefaultClientNameProvider();
+    private final static  DubboSpanNameProvider spanNameProvider = new DefaultSpanNameProvider();
+    private final static  DubboClientNameProvider clientNameProvider = new DefaultClientNameProvider();
 
 
 

@@ -19,8 +19,8 @@ import java.util.Collections;
 public class DubboClientRequestAdapter implements ClientRequestAdapter {
     private Invoker<?> invoker;
     private Invocation invocation;
-    private DubboSpanNameProvider spanNameProvider = new DefaultSpanNameProvider();
-    private DubboServerNameProvider serverNameProvider = new DefaultServerNameProvider();
+    private final static DubboSpanNameProvider spanNameProvider = new DefaultSpanNameProvider();
+    private final static DubboServerNameProvider serverNameProvider = new DefaultServerNameProvider();
 
 
     public DubboClientRequestAdapter(Invoker<?> invoker, Invocation invocation) {
@@ -60,7 +60,7 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
         String serverName = serverNameProvider.resolveServerName(RpcContext.getContext());
         return Endpoint.create(serverName, IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort());
     }
-    
+
 
 
 }
