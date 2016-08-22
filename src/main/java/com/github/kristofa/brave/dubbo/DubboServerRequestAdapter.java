@@ -4,6 +4,9 @@ import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.github.kristofa.brave.*;
+import com.github.kristofa.brave.dubbo.support.DefaultClientNameProvider;
+import com.github.kristofa.brave.dubbo.support.DefaultServerNameProvider;
+import com.github.kristofa.brave.dubbo.support.DefaultSpanNameProvider;
 
 import static com.github.kristofa.brave.IdConversion.convertToLong;
 
@@ -21,6 +24,10 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
     private Invoker<?> invoker;
     private Invocation invocation;
     private ServerTracer serverTracer;
+    private DubboSpanNameProvider spanNameProvider = new DefaultSpanNameProvider();
+    private DubboClientNameProvider clientNameProvider = new DefaultClientNameProvider();
+
+
 
     public DubboServerRequestAdapter(Invoker<?> invoker, Invocation invocation,ServerTracer serverTracer) {
         this.invoker = invoker;
@@ -48,23 +55,21 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
 
     @Override
     public String getSpanName() {
-        return invoker.getInterface().getSimpleName()+"."+invocation.getMethodName();
+        return spanNameProvider.resolveSpanName(RpcContext.getContext());
     }
 
     @Override
     public Collection<KeyValueAnnotation> requestAnnotations() {
 
-        String application = RpcContext.getContext().getUrl().getParameter("application");
         String ipAddr = RpcContext.getContext().getUrl().getIp();
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getRemoteAddress();
+        final String clientName = clientNameProvider.resolveClientName(RpcContext.getContext());
 
-        final String clientName = invocation.getAttachment("clientName");
         serverTracer.setServerReceived(IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort(),clientName);
 
         InetSocketAddress socketAddress = RpcContext.getContext().getLocalAddress();
         if (socketAddress != null) {
-            KeyValueAnnotation remoteAddrAnnotation = KeyValueAnnotation.create(
-                   "address", socketAddress.toString());
+            KeyValueAnnotation remoteAddrAnnotation = KeyValueAnnotation.create("address", socketAddress.toString());
             return Collections.singleton(remoteAddrAnnotation);
         } else {
             return Collections.emptyList();

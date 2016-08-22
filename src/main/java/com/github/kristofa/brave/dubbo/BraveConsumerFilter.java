@@ -29,7 +29,6 @@ public class BraveConsumerFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         clientRequestInterceptor.handle(new DubboClientRequestAdapter(invoker,invocation));
-        final Span currentClientSpan = clientSpanThreadBinder.getCurrentClientSpan();
         try{
             Result rpcResult = invoker.invoke(invocation);
             clientResponseInterceptor.handle(new DubboClientResponseAdapter(rpcResult));
@@ -40,7 +39,5 @@ public class BraveConsumerFilter implements Filter {
         }finally {
             clientSpanThreadBinder.setCurrentSpan(null);
         }
-
-
     }
 }

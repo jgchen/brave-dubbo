@@ -4,6 +4,8 @@ import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.github.kristofa.brave.*;
+import com.github.kristofa.brave.dubbo.support.DefaultServerNameProvider;
+import com.github.kristofa.brave.dubbo.support.DefaultSpanNameProvider;
 import com.github.kristofa.brave.internal.Nullable;
 import com.twitter.zipkin.gen.Endpoint;
 
@@ -17,6 +19,9 @@ import java.util.Collections;
 public class DubboClientRequestAdapter implements ClientRequestAdapter {
     private Invoker<?> invoker;
     private Invocation invocation;
+    private DubboSpanNameProvider spanNameProvider = new DefaultSpanNameProvider();
+    private DubboServerNameProvider serverNameProvider = new DefaultServerNameProvider();
+
 
     public DubboClientRequestAdapter(Invoker<?> invoker, Invocation invocation) {
         this.invoker = invoker;
@@ -25,7 +30,7 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
 
     @Override
     public String getSpanName() {
-        return invoker.getInterface().getSimpleName()+"."+invocation.getMethodName();
+        return spanNameProvider.resolveSpanName(RpcContext.getContext());
     }
 
     @Override
@@ -52,21 +57,10 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
     public Endpoint serverAddress() {
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getRemoteAddress();
         String ipAddr = RpcContext.getContext().getUrl().getIp();
-        String serverName = resolverServerName();
+        String serverName = serverNameProvider.resolveServerName(RpcContext.getContext());
         return Endpoint.create(serverName, IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort());
     }
-
-    /**
-     *
-     * com.xxx.bu.serverName.api.XXXX
-     * 公司应用标准化后ServerName从interfaceName中解析
-     */
-    private  String resolverServerName(){
-       String interfaceName= invoker.getInterface().getName();
-       String packageName =interfaceName.substring(0,interfaceName.lastIndexOf(".api."));
-       String  serverName =  packageName.substring(packageName.lastIndexOf(".")+1);
-       return serverName;
-    }
+    
 
 
 }
