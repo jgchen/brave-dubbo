@@ -5,10 +5,13 @@ import com.github.kristofa.brave.http.HttpSpanCollector;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.FactoryBean;
 
+import java.util.logging.Logger;
+
 /**
  * Created by jack-cooper on 2017/2/20.
  */
 public class BraveFactoryBean implements FactoryBean<Brave> {
+    private static final Logger LOGGER = Logger.getLogger(BraveFactoryBean.class.getName());
     /**服务名*/
     private String serviceName;
     /**zipkin服务器ip及端口，不配置默认打印日志*/
@@ -39,8 +42,10 @@ public class BraveFactoryBean implements FactoryBean<Brave> {
         Brave.Builder builder = new Brave.Builder(this.serviceName);
         if (this.zipkinHost != null && !"".equals(this.zipkinHost)) {
             builder.spanCollector(HttpSpanCollector.create(this.zipkinHost, new EmptySpanCollectorMetricsHandler()));
+            LOGGER.info("brave dubbo config collect whith httpSpanColler");
         }else{
             builder.spanCollector(new LoggingSpanCollector()).traceSampler(Sampler.create(1.0f)).build();
+            LOGGER.info("brave dubbo config collect whith loggingSpanColletor");
         }
         this.instance = builder.build();
     }
