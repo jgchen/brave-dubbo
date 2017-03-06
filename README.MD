@@ -13,11 +13,11 @@
     
    * 打印日志方式
 ```xml
-    <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean" p:serviceName="notify" />
+        <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean" p:serviceName="serviceName" p:zipkinHost="" p:rate="1.0" />
 ```
    * http方式
 ```xml
- <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean" p:serviceName="serviceName" p:zipkinHost="http://zipkinip:9411/" />
+        <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean" p:serviceName="serviceName" p:zipkinHost="http://10.168.16.111:9411/" p:rate="1.0" />
 ```
 
 

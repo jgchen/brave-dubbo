@@ -16,6 +16,8 @@ public class BraveFactoryBean implements FactoryBean<Brave> {
     private String serviceName;
     /**zipkin服务器ip及端口，不配置默认打印日志*/
     private String zipkinHost;
+    /**采样率 0~1 之间*/
+    private float rate = 1.0f;
     /**单例模式*/
     private Brave instance;
 
@@ -31,6 +33,14 @@ public class BraveFactoryBean implements FactoryBean<Brave> {
         return zipkinHost;
     }
 
+    public String getRate() {
+        return String.valueOf(rate);
+    }
+
+    public void setRate(String rate) {
+        this.rate = Float.parseFloat(rate);
+    }
+
     public void setZipkinHost(String zipkinHost) {
         this.zipkinHost = zipkinHost;
     }
@@ -41,11 +51,11 @@ public class BraveFactoryBean implements FactoryBean<Brave> {
         }
         Brave.Builder builder = new Brave.Builder(this.serviceName);
         if (this.zipkinHost != null && !"".equals(this.zipkinHost)) {
-            builder.spanCollector(HttpSpanCollector.create(this.zipkinHost, new EmptySpanCollectorMetricsHandler()));
-            LOGGER.info("brave dubbo config collect whith httpSpanColler");
+            builder.spanCollector(HttpSpanCollector.create(this.zipkinHost, new EmptySpanCollectorMetricsHandler())).traceSampler(Sampler.create(rate)).build();
+            LOGGER.info("brave dubbo config collect whith httpSpanColler , rate is "+ rate);
         }else{
-            builder.spanCollector(new LoggingSpanCollector()).traceSampler(Sampler.create(1.0f)).build();
-            LOGGER.info("brave dubbo config collect whith loggingSpanColletor");
+            builder.spanCollector(new LoggingSpanCollector()).traceSampler(Sampler.create(rate)).build();
+            LOGGER.info("brave dubbo config collect whith loggingSpanColletor , rate is "+ rate);
         }
         this.instance = builder.build();
     }
