@@ -8,7 +8,7 @@ import com.github.kristofa.brave.internal.Nullable;
 
 /**
  *   解析dubbo consumer applicationName
- *   @see com.github.kristofa.brave.dubbo.DubboClientRequestAdapter.addSpanIdToRequest(SpanId spanId)
+ *   @see com.github.kristofa.brave.dubbo.DubboClientRequestAdapter#addSpanIdToRequest(SpanId spanId)
  *   RpcContext.getContext().setAttachment("clientName", application);
 
  */
