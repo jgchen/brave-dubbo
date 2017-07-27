@@ -23,6 +23,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave-spancollector-http</artifactId>
+            <version>3.9.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo</artifactId>
             <version>2.5.3</version>
@@ -44,5 +56,17 @@
         </dependency>
     </dependencies>
 
-
+    <distributionManagement>
+        <snapshotRepository>
+            <id>base-snapshot</id>
+            <name>Base Snapshot</name>
+            <url>http://10.168.21.53:8081/nexus/content/repositories/base-snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>base-release</id>
+            <name>Base Release</name>
+            <url>http://10.168.21.53:8081/nexus/content/repositories/base-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
