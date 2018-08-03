@@ -1,3 +1,7 @@
+Fork自 https://github.com/jgchen/brave-dubbo
+
+做了一定优化,修正了服务名不准的bug,过滤监了控报文,brave bean不写serviceName
+
 使用步骤：
 
 ### maven添加该项目jar包（自己打包安装到本地仓库）
@@ -13,11 +17,11 @@
     
    * 打印日志方式
 ```xml
-        <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean" p:serviceName="serviceName" p:zipkinHost="" p:rate="1.0" />
+        <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean"  p:zipkinHost="" p:rate="1.0" />
 ```
    * http方式
 ```xml
-        <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean" p:serviceName="serviceName" p:zipkinHost="http://10.168.16.111:9411/" p:rate="1.0" />
+        <bean id="brave" class="com.github.kristofa.brave.dubbo.BraveFactoryBean"  p:zipkinHost="http://10.168.16.111:9411/" p:rate="1.0" />
 ```
 
 
