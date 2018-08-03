@@ -32,16 +32,19 @@ public class DubboClientRequestAdapter implements ClientRequestAdapter {
 
 	@Override
 	public void addSpanIdToRequest(@Nullable SpanId spanId) {
+		if ("com.alibaba.dubbo.monitor.MonitorService"
+				.equalsIgnoreCase(RpcContext.getContext().getUrl()
+						.getParameter("interface"))) {
+			SpanId.builder().sampled(false).build();
+			return;
+		}
+
 		String application = RpcContext.getContext().getUrl()
 				.getParameter("application");
 		RpcContext.getContext().setAttachment("clientName", application);
+
 		if (spanId == null) {
-			if ("com.alibaba.dubbo.monitor.MonitorService"
-					.equalsIgnoreCase(RpcContext.getContext().getUrl()
-							.getParameter("interface")))
-				RpcContext.getContext().setAttachment("sampled", "1");
-			else
-				RpcContext.getContext().setAttachment("sampled", "0");
+			RpcContext.getContext().setAttachment("sampled", "0");
 		} else {
 			RpcContext.getContext().setAttachment("traceId",
 					IdConversion.convertToString(spanId.traceId));
