@@ -1,6 +1,6 @@
 Fork自 https://github.com/jgchen/brave-dubbo
 
-做了一定优化,修正了服务名不准的bug,过滤监了控报文,brave bean不写serviceName
+做了一定优化,修正了服务名不准的bug,过滤了监控报文,<bean id="brave" 不写serviceName
 
 使用步骤：
 
