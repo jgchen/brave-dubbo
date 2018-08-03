@@ -5,7 +5,6 @@ import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.github.kristofa.brave.*;
 import com.github.kristofa.brave.dubbo.support.DefaultClientNameProvider;
-import com.github.kristofa.brave.dubbo.support.DefaultServerNameProvider;
 import com.github.kristofa.brave.dubbo.support.DefaultSpanNameProvider;
 
 import static com.github.kristofa.brave.IdConversion.convertToLong;
@@ -25,7 +24,7 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
     private Invocation invocation;
     private ServerTracer serverTracer;
     private final static  DubboSpanNameProvider spanNameProvider = new DefaultSpanNameProvider();
-    private final static  DubboClientNameProvider clientNameProvider = new DefaultClientNameProvider();
+    //private final static  DubboClientNameProvider clientNameProvider = new DefaultClientNameProvider();
 
 
 
@@ -63,7 +62,7 @@ public class DubboServerRequestAdapter  implements ServerRequestAdapter {
 
         String ipAddr = RpcContext.getContext().getUrl().getIp();
         InetSocketAddress inetSocketAddress = RpcContext.getContext().getRemoteAddress();
-        final String clientName = clientNameProvider.resolveClientName(RpcContext.getContext());
+        final String clientName = invocation.getAttachment("clientName");//clientNameProvider.resolveClientName(RpcContext.getContext());
 
         serverTracer.setServerReceived(IPConversion.convertToInt(ipAddr),inetSocketAddress.getPort(),clientName);
 
