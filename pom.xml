@@ -1,72 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>brave</artifactId>
-        <groupId>io.zipkin.brave</groupId>
-        <version>3.9.1</version>
-    </parent>
+<!-- 	<parent>
+		<artifactId>brave</artifactId>
+		<groupId>io.zipkin.brave</groupId>
+		<version>3.9.1</version>
+	</parent> -->
 
-    <groupId>io.zipkin.brave</groupId>
-    <artifactId>brave-dubbo</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+	<groupId>io.zipkin.brave</groupId>
+	<artifactId>brave-dubbo</artifactId>
+	<version>1.5.2-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.zipkin.brave</groupId>
-            <artifactId>brave-core</artifactId>
-            <version>3.9.1</version>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>io.zipkin.brave</groupId>
+			<artifactId>brave-core</artifactId>
+			<version>3.9.1</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>4.3.3.RELEASE</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.2.5.RELEASE</version>
+		</dependency>
 
-        <dependency>
-            <groupId>io.zipkin.brave</groupId>
-            <artifactId>brave-spancollector-http</artifactId>
-            <version>3.9.0</version>
-        </dependency>
+		<dependency>
+			<groupId>io.zipkin.brave</groupId>
+			<artifactId>brave-spancollector-http</artifactId>
+			<version>3.9.0</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>2.5.3</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.5.3</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>base-snapshot</id>
-            <name>Base Snapshot</name>
-            <url>http://10.168.21.53:8081/nexus/content/repositories/base-snapshots/</url>
-            <uniqueVersion>true</uniqueVersion>
-        </snapshotRepository>
-        <repository>
-            <id>base-release</id>
-            <name>Base Release</name>
-            <url>http://10.168.21.53:8081/nexus/content/repositories/base-releases/</url>
-        </repository>
-    </distributionManagement>
+	<!-- <distributionManagement> <snapshotRepository> <id>base-snapshot</id> 
+		<name>Base Snapshot</name> <url>http://10.168.21.53:8081/nexus/content/repositories/base-snapshots/</url> 
+		<uniqueVersion>true</uniqueVersion> </snapshotRepository> <repository> <id>base-release</id> 
+		<name>Base Release</name> <url>http://10.168.21.53:8081/nexus/content/repositories/base-releases/</url> 
+		</repository> </distributionManagement> -->
 </project>
